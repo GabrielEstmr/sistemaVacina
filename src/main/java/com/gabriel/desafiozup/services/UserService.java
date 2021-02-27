@@ -20,5 +20,13 @@ public class UserService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				 "Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
 	}
+	
+	public User insert(User obj) {
+		//Para garantir que o obj tenha id nulo > para o proprio JPA criar o id de acordo com a estratégia definida
+		//Pois o metodo save do JPA se nao tiver id nulo ele considera que é uma atualização e nao uma inserção
+		obj.setId(null);
+		return repo.save(obj);
+		
+	}
 
 }
