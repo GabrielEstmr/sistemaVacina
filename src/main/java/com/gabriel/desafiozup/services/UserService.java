@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.gabriel.desafiozup.domain.User;
 import com.gabriel.desafiozup.repositories.UserRepository;
+import com.gabriel.desafiozup.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -16,7 +17,8 @@ public class UserService {
 	
 	public User find(Integer id) {
 		Optional<User> obj = repo.findById(id);
-		return obj.orElse(null); 
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
 	}
 
 }

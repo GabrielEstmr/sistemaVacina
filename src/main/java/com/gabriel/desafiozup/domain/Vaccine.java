@@ -1,51 +1,49 @@
 package com.gabriel.desafiozup.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class User implements Serializable{
+public class Vaccine implements Serializable{
 	//Default version number
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private String email;
-	private String cpf;
-	private Date bday;
+	private Date admDate;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "user")
-	private List<Vaccine> vaccines = new ArrayList<>();
-	 
+	//There's no import because its belongs to the same class (both are domains)
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
 	//Constructors
-	public User () {
+	public Vaccine() {
+		
 	}
 
-	//Constructors using fields: all fields
-	public User(Integer id, String name, String email, String cpf, Date bday) {
+	//Constructor using fields: All fields with exception LIST
+	public Vaccine(Integer id, String name, Date admDate, User user) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
-		this.cpf = cpf;
-		this.bday = bday;
+		this.admDate = admDate;
+		this.setUser(user);
 	}
-	
 
-	//Getters e Setters: all fields
+	//Getters and Setters - For All
 	public Integer getId() {
 		return id;
 	}
@@ -62,41 +60,25 @@ public class User implements Serializable{
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public Date getAdmDate() {
+		return admDate;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public Date getBday() {
-		return bday;
-	}
-
-	public void setBday(Date bday) {
-		this.bday = bday;
+	public void setAdmDate(Date admDate) {
+		this.admDate = admDate;
 	}
 	
-	//Getters and Setter for List
-	public List<Vaccine> getVaccines() {
-		return vaccines;
+	//Getters and Setter for key
+	public User getUser() {
+		return user;
 	}
 
-	public void setVaccines(List<Vaccine> vaccines) {
-		this.vaccines = vaccines;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
 
-	//HashCode e Equals
+
+	//HashCode e Setters
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -113,7 +95,7 @@ public class User implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Vaccine other = (Vaccine) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -121,6 +103,8 @@ public class User implements Serializable{
 			return false;
 		return true;
 	}
+
+	
 
 	
 	
