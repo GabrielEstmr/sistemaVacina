@@ -1,5 +1,6 @@
 package com.gabriel.desafiozup.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class UserService {
 			//DataIntegrityViolationException do meu Pacote
 			throw new DataIntegrityViolationException("Não é possivel excluir um Usuário que contem Registros de Vacinação");
 		}
+	}
+	
+	public List<User> findAll(){
+		return repo.findAll();
 	}
 
 
