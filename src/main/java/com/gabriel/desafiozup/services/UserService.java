@@ -15,6 +15,15 @@ public class UserService {
 	@Autowired
 	private UserRepository repo;
 	
+	
+	private void updateData(User newObj,User obj) {
+		//Aqui atualização de newObj
+		newObj.setName(obj.getName());
+		newObj.setCpf(obj.getCpf());
+		newObj.setEmail(obj.getEmail());
+		newObj.setBday(obj.getBday());
+	}
+	
 	public User find(Integer id) {
 		Optional<User> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -27,6 +36,13 @@ public class UserService {
 		obj.setId(null);
 		return repo.save(obj);
 		
+	}
+	
+	public User update(User obj) {
+		//Verificação dse há o obj no banco, caso não haja > já lança um erro
+		User newObj = find(obj.getId());
+		updateData(newObj,obj);
+		return repo.save(newObj);
 	}
 
 }
