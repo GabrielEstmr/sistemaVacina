@@ -3,6 +3,7 @@ package com.gabriel.desafiozup.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.gabriel.desafiozup.domain.User;
@@ -44,5 +45,17 @@ public class UserService {
 		updateData(newObj,obj);
 		return repo.save(newObj);
 	}
+	
+	public void delete(Integer id) {
+		//Verificação dse há o obj no banco, caso não haja > já lança um erro
+		find(id);
+		try {
+			repo.deleteById(id);
+		}catch(DataIntegrityViolationException e) {
+			//DataIntegrityViolationException do meu Pacote
+			throw new DataIntegrityViolationException("Não é possivel excluir um Usuário que contem Registros de Vacinação");
+		}
+	}
+
 
 }
