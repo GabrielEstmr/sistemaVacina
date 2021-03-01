@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.gabriel.desafiozup.domain.User;
 
+
 public class UserDTO  implements Serializable{
 	//Default version number
 	private static final long serialVersionUID = 1L;

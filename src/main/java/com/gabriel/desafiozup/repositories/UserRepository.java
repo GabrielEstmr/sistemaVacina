@@ -12,4 +12,8 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@org.springframework.transaction.annotation.Transactional(readOnly = true)
 	User findByEmail(String email);
 	
+	
+	@org.springframework.transaction.annotation.Transactional(readOnly = true)
+	User findByCpf(String cpf);
+	
 }

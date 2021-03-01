@@ -36,8 +36,31 @@ public class UserService {
 	public User insert(User obj) {
 		//Para garantir que o obj tenha id nulo > para o proprio JPA criar o id de acordo com a estratégia definida
 		//Pois o metodo save do JPA se nao tiver id nulo ele considera que é uma atualização e nao uma inserção
-		obj.setId(null);
-		return repo.save(obj);
+		
+		
+		User userEmail = repo.findByEmail(obj.getEmail());
+		User userCPF = repo.findByCpf(obj.getCpf());
+		
+		String msg = "";
+		
+		try {
+			obj.setId(null);
+			return repo.save(obj);
+		}catch(DataIntegrityViolationException e) {
+			//DataIntegrityViolationException do meu Pacote
+			
+			if (userEmail != null) {
+				msg = msg + " Email";
+			}
+			
+			if (userCPF != null) {
+				msg = msg + " CPF";
+			}
+			
+			throw new DataIntegrityViolationException("Campo" + msg + " já consta nos registros do sistema.");
+		}
+		
+
 		
 	}
 	
