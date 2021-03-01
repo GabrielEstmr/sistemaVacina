@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.gabriel.desafiozup.domain.User;
+import com.gabriel.desafiozup.dto.UserDTO;
 import com.gabriel.desafiozup.repositories.UserRepository;
 import com.gabriel.desafiozup.services.exceptions.ObjectNotFoundException;
 
@@ -60,6 +61,11 @@ public class UserService {
 	
 	public List<User> findAll(){
 		return repo.findAll();
+	}
+	
+	public User fromDTO(UserDTO objDTO) {
+		
+		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail(), objDTO.getCpf(), objDTO.getBday());
 	}
 
 

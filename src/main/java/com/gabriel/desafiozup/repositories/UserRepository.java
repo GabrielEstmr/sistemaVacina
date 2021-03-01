@@ -8,4 +8,8 @@ import com.gabriel.desafiozup.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 
+	//Transactional faz transação ficar mais rápida e diminui loking do BD
+	@org.springframework.transaction.annotation.Transactional(readOnly = true)
+	User findByEmail(String email);
+	
 }

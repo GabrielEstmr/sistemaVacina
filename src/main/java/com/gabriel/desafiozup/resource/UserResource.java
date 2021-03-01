@@ -5,6 +5,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +36,8 @@ public class UserResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody User obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody UserDTO objDTO){
+		User obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);
 		//fromCurrentRequest() > retorna endpoint > .path adiciona à url do endpoint
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -46,7 +49,8 @@ public class UserResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody User obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody UserDTO objDTO, @PathVariable Integer id){
+		User obj = service.fromDTO(objDTO);
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
